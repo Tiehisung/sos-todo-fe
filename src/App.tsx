@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
 import type { ITodo } from "./types/todo";
+import type { IApiResponse } from "./types";
 const API_URL =
   import.meta.env.VITE_API_URL || "https://sos-todo-api.vercel.app/api";
 
@@ -9,11 +10,18 @@ function App() {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [loading, setLoading] = useState(true);
 
+  console.log({ API_URL });
   const loadTodos = async () => {
     try {
       const res = await fetch(`${API_URL}/todos`);
-      const data = await res.json();
-      setTodos(data);
+      const data: IApiResponse<ITodo[]> = await res.json();
+
+      console.log("Loaded todos:", data);
+      if (data.success && data.data) {
+        setTodos(data.data);
+      } else {
+        console.error("Failed to load todos:", data.error);
+      }
       setLoading(false);
     } catch (error) {
       console.log("Error loading todoes:", error);
