@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
 import type { ITodo } from "./types/todo";
-const API_URL =  "http://localhost:3001/api";
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://sos-todo-api.vercel.app/api";
 
 function App() {
   const [todos, setTodos] = useState<ITodo[]>([]);
